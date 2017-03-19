@@ -1,0 +1,335 @@
+﻿@using Abp.Authorization.Users
+@using Abp.Web.Mvc.Extensions
+@model Abp.Application.Services.Dto.ListResultDto<BookManagementSystem.Users.Dto.UserListDto>
+@{
+    ViewBag.ActiveMenu = "Users"; //The menu item will be active for this page.
+}
+@section scripts
+{
+    @Html.IncludeScript("~/Views/Users/Index.js")
+}
+<div class="row-content am-cf">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+            <div class="widget am-cf">
+                <div class="widget-head am-cf">
+                    <div class="widget-title  am-cf">@L("Users")</div>
+                </div>
+                <div class="widget-body  am-fr">
+
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                        <div class="am-form-group">
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button type="button" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</button>
+                                    <button type="button"  id="updateRoleInfo" class="am-btn am-btn-default am-btn-secondary"><span class="am-icon-save"></span> 保存</button>
+                                    <button type="button" class="am-btn am-btn-default am-btn-warning"><span class="am-icon-archive"></span> 审核</button>
+                                    <button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
+                        <div class="am-form-group tpl-table-list-select">
+                            <select data-am-selected="{btnSize: 'sm'}">
+                                <option value="option1">所有类别</option>
+                                <option value="option2">IT业界</option>
+                                <option value="option3">数码产品</option>
+                                <option value="option3">笔记本电脑</option>
+                                <option value="option3">平板电脑</option>
+                                <option value="option3">只能手机</option>
+                                <option value="option3">超极本</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                        <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                            <input type="text" class="am-form-field ">
+                            <span class="am-input-group-btn">
+                                <button class="am-btn am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button"></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="am-u-sm-12 am-scrollable-horizontal am-text-nowrap">
+                        <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black am-table-centered " id="example-r">
+                            <thead>
+                                <tr>
+                                    <th>@L("Surname")</th>
+                                    <th>@L("UserName")</th>
+                                    <th>@L("PhoneNumber")</th>
+                                    <th>@L("EmailAddress")</th>
+                                    <th>@L("LastLoginTime")</th>
+                                    <th>@L("CreationTime")</th>
+                                    <th>@L("IsVip")</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.Items.Count; i++)
+                                {
+                                    if (i % 2 == 0)
+                                    {
+                                        <tr class="gradeX">
+                                            <td>@Model.Items[i].Surname</td>
+                                            <td>@Model.Items[i].UserName</td>
+                                            <td>@Model.Items[i].PhoneNumber</td>
+                                            <td>@Model.Items[i].EmailAddress</td>
+                                            <td>@Model.Items[i].LastLoginTime</td>
+                                            <td>@Model.Items[i].CreationTime</td>
+                                            <td>@L(Model.Items[i].IsVip ? "Yes" : "No")</td>
+                                            <td>
+                                                <div class="tpl-table-black-operation">
+                                                    <a href="javascript:;">
+                                                        <i class="am-icon-pencil"></i> 编辑
+                                                    </a>
+                                                    <a href="javascript:;" class="tpl-table-black-operation-del">
+                                                        <i class="am-icon-trash"></i> 删除
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr class="even gradeC">
+                                            <td>@Model.Items[i].Surname</td>
+                                            <td>@Model.Items[i].UserName</td>
+                                            <td>@Model.Items[i].PhoneNumber</td>
+                                            <td>@Model.Items[i].EmailAddress</td>
+                                            <td>@Model.Items[i].LastLoginTime</td>
+                                            <td>@Model.Items[i].CreationTime</td>
+                                            <td>@L(Model.Items[i].IsVip ? "Yes" : "No")</td>
+                                            <td>
+                                                <div class="tpl-table-black-operation">
+                                                    <a href="javascript:;">
+                                                        <i class="am-icon-pencil"></i> 编辑
+                                                    </a>
+                                                    <a href="javascript:;" class="tpl-table-black-operation-del">
+                                                        <i class="am-icon-trash"></i> 删除
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                <!-- more data -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="am-u-lg-12 am-cf">
+                        <div class="am-fr">
+                            <ul class="am-pagination tpl-pagination">
+                                <li class="am-disabled"><a href="#">«</a></li>
+                                <li class="am-active"><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li><a href="#">»</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-2.2.0.min.js"></script>
+<script>
+    
+    $('#updateRoleInfo').click(function (e) {
+        
+        e.preventDefault();// 阻止表单提交
+
+        //构建要传输的参数对象
+        
+
+        // 动态 api 调用 （直接调用应用层方法）
+        //var _roleService = abp.services.app.role;
+        //_roleService.updateRoleInfo(role).done(function (data) {
+        //    debugger
+        //    console.log(data);
+        //    location.reload(true); //reload page to see new user!
+        //}).always(function () {
+        //    abp.ui.clearBusy(_$modal);
+        //});
+
+        //调用abp的ajax方法
+
+        var role = {
+            RoleId: 2,
+            Name: 'Max',
+            DisplayName: 'MaxLong'
+        };
+
+        abp.ajax({
+            url: '/Roles/GetAllPermission',
+            //data: JSON.stringify(role),
+            method: "GET",
+        }).done(function (data) {
+            console.log(data);
+            //abp.notify.success('成功');
+            //abp.notify.error('失败');
+            location.reload(true);
+        }).fail(function (data)
+        {
+            debugger
+            
+        });
+    })
+
+    
+
+    
+</script>
+@*<div>
+        <h1>@L("Users")</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <button data-toggle="modal" data-target="#UserCreateModal" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> @L("CreateNewUser")</button>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@L("UserName")</th>
+                            <th>@L("FullName")</th>
+                            <th>@L("EmailAddress")</th>
+                            <th>@L("IsActive")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model.Items)
+                        {
+                            <tr>
+                                <td>@user.UserName</td>
+                                <td>@user.FullName</td>
+                                <td>@user.EmailAddress</td>
+                                <td>@L(user.IsActive ? "Yes" : "No")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>*@
+
+@*<div class="modal fade" id="UserCreateModal" tabindex="-1" role="dialog" aria-labelledby="UserCreateModalLabel" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <form name="userCreateForm" role="form" novalidate class="form-validation">
+                      <div class="modal-header">
+                          <h4 class="modal-title">
+                              <span>@L("CreateNewUser")</span>
+                          </h4>
+                      </div>
+                      <div class="modal-body">
+                          <div class="form-group">
+                              <label>@L("UserName")</label>
+                              <input class="form-control" type="text" name="UserName" required maxlength="@AbpUserBase.MaxUserNameLength" minlength="2">
+                          </div>
+                          <div class="form-group">
+                              <label>@L("Name")</label>
+                              <input type="text" name="Name" class="form-control" required maxlength="@BookManagementSystem.Users.User.MaxNameLength">
+                          </div>
+                          <div class="form-group">
+                              <label>@L("Surname")</label>
+                              <input type="text" name="Surname" class="form-control" required maxlength="@BookManagementSystem.Users.User.MaxSurnameLength">
+                          </div>
+                          <div class="form-group">
+                              <label>@L("EmailAddress")</label>
+                              <input type="email" name="EmailAddress" class="form-control" maxlength="@AbpUserBase.MaxEmailAddressLength">
+                          </div>
+                          <div class="form-group">
+                              <label>@L("Password")</label>
+                              <input type="password" name="Password" class="form-control" required maxlength="@BookManagementSystem.Users.User.MaxPlainPasswordLength">
+                          </div>
+                          <div class="checkbox">
+                              <label>
+                                  <input type="checkbox" name="IsActive" value="true" value="true" checked="checked"> @L("IsActive")
+                              </label>
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">@L("Cancel")</button>
+                          <button type="submit" class="btn btn-primary blue"><i class="fa fa-save"></i> <span>@L("Save")</span></button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+    </div>*@
+
+<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-1">
+    <div class="am-modal-dialog">
+        <div class="am-modal-hd">
+            @*<span class="tpl-form-line-small-title">标题</span>*@
+            <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+        </div>
+        <form action="" class="am-form tpl-form-line-form">
+            <fieldset>
+                <div class="am-form-group">
+                    <label for="user-name" class="am-u-sm-3 am-form-label"><span class="tpl-form-line-small-title">标题：</span></label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="user-name" placeholder="请输入标题文字" required>
+                        @*<small>请填写标题文字10-20字左右。</small>*@
+                    </div>
+                </div>
+                @*<div class="am-form-group">
+                    <label for="doc-vld-name">用户名：</label>
+                    <input type="text" id="doc-vld-name" minlength="3" placeholder="输入用户名" class="am-form-field" required />
+                </div>*@
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+
+
+@*<div class="row-content am-cf modal" id="UserCreateModal"  tabindex="-1" role="dialog">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+            <div class="widget am-cf">
+                <div class="widget-head am-cf">
+                    <div class="widget-title am-fl">线条表单</div>
+                    <div class="widget-function am-fr">
+                        <a href="javascript:;" class="am-icon-cog"></a>
+                    </div>
+                </div>
+                <div class="widget-body am-fr">
+                    <form class="am-form tpl-form-line-form">
+                        <div class="am-form-group">
+                            <label for="user-name" class="am-u-sm-3 am-form-label">标题 <span class="tpl-form-line-small-title">Title</span></label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input" id="user-name" placeholder="请输入标题文字">
+                                <small>请填写标题文字10-20字左右。</small>
+                            </div>
+                        </div>
+
+                        <div class="am-form-group">
+                            <label for="user-email" class="am-u-sm-3 am-form-label">发布时间 <span class="tpl-form-line-small-title">Time</span></label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="am-form-field tpl-form-no-bg" placeholder="发布时间" data-am-datepicker="" readonly>
+                                <small>发布时间为必填</small>
+                            </div>
+                        </div>
+
+                        <div class="am-form-group">
+                            <label for="user-phone" class="am-u-sm-3 am-form-label">作者 <span class="tpl-form-line-small-title">Author</span></label>
+                            <div class="am-u-sm-9">
+                                <select data-am-selected="{searchBox: 1}" style="display: none;">
+                                    <option value="a">-The.CC</option>
+                                    <option value="b">夕风色</option>
+                                    <option value="o">Orange</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-3">
+                                <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@

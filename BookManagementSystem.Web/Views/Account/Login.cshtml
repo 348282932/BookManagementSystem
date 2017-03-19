@@ -1,0 +1,128 @@
+﻿@{Layout = null;}
+@using Microsoft.Owin.Security
+@using System.Web.Optimization
+@model BookManagementSystem.Web.Models.Account.LoginFormViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>图书管理系统</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="">
+    <meta name="description" content="图书管理系统">
+    <meta name="keywords" content="index">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    @Styles.Render("~/Bundles/vendor/css")
+    @Styles.Render("~/Bundles/css")
+    @Styles.Render("~/Bundles/amazeui/login/css")
+    <script type="text/javascript">
+        //This is used to get the application's root path from javascript. It's useful if you're running application in a virtual directory under IIS.
+        var abp = abp || {}; abp.appPath = '@ApplicationPath';
+    </script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="@Url.Content("~/Scripts/others/html5shiv.js")"></script>
+        <script src="@Url.Content("~/Scripts/others/respond.min.js")"></script>
+    <![endif]-->
+
+</head>
+
+<body data-type="login">
+    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+    <div class="am-g tpl-g">
+        <!-- 风格切换 -->
+        <div class="tpl-skiner">
+            <div class="tpl-skiner-toggle am-icon-cog">
+            </div>
+            <div class="tpl-skiner-content">
+                <div class="tpl-skiner-content-title">
+                    选择主题
+                </div>
+                <div class="tpl-skiner-content-bar">
+                    <span class="skiner-color skiner-white" data-color="theme-white"></span>
+                    <span class="skiner-color skiner-black" data-color="theme-black"></span>
+                </div>
+            </div>
+        </div>
+        <div class="tpl-login">
+            <div  id="LoginArea" class="tpl-login-content">
+                <div class="tpl-login-logo">
+                </div>
+                <form id="LoginForm" class="am-form tpl-form-line-form" action="@(Url.Action("Login", "Account"))?returnUrl=@(Model.ReturnUrl)" method="POST">
+                    
+                    @if (Model.IsMultiTenancyEnabled)
+                    {
+                        <div class="am-form-group">
+                            <input type="text" class="tpl-form-input" id="TenancyName" placeholder="@L("TenancyName")" required maxlength="@BookManagementSystem.MultiTenancy.Tenant.MaxTenancyNameLength">
+                            <span class="text-muted">@L("CanBeEmptyToLoginAsHost")</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <input type="hidden" id="TenancyName" value="">
+                    }
+
+                    <div class="am-form-group">
+                        <input type="text" class="tpl-form-input" id="EmailAddressInput" placeholder="@L("UserNameOrEmail")" required maxlength="@BookManagementSystem.Users.User.MaxEmailAddressLength">
+                    </div>
+
+                    <div class="am-form-group">
+                        <input type="password" class="tpl-form-input" id="PasswordInput" placeholder="@L("Password")" required maxlength="@BookManagementSystem.Users.User.MaxPlainPasswordLength">
+                    </div>
+                    <div class="am-form-group tpl-login-remember-me">
+                        <input id="remember-me" type="checkbox">
+                        <label for="remember-me">
+                            @L("RememberMe")
+                        </label>
+                    </div>
+                    <input id="ReturnUrlHash" type="hidden" name="returnUrlHash" />
+                    <div class="am-form-group">
+                        <button id="LoginButton" type="submit" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">@L("LogIn")</button>
+                    </div>
+                    @*<div class="am-form-group">
+                        <a href="@Url.Action("Register")" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn"><i class="fa fa-sign-in"></i> @L("Register")</a>
+                    </div>*@
+                </form>
+                @{
+                    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes().ToList();
+                }
+
+                @if (loginProviders.Count > 0)
+                {
+                    <p>@L("OrLoginWith"):</p>
+
+
+                    using (Html.BeginForm("ExternalLogin", "Account", method: FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+                        <input type="hidden" name="provider" value="" />
+
+                        foreach (var provider in loginProviders)
+                        {
+                            <a class="btn btn-default btn-sm social-login-link" title="@provider.AuthenticationType"
+                               data-provider="@provider.AuthenticationType"
+                               href="javascript:;">
+                                <i class="fa fa-@(provider.AuthenticationType.ToLower())"></i> @provider.AuthenticationType
+                            </a>
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    
+    @Scripts.Render("~/Bundles/vendor/js/bottom")
+    @Scripts.Render("~/Bundles/js")
+    @Scripts.Render("~/Bundles/amazeui/login/js")
+</body>
+</html>
