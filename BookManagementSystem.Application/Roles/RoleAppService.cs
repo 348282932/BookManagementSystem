@@ -6,6 +6,8 @@ using BookManagementSystem.Roles.Dto;
 using Abp.AutoMapper;
 using BookManagementSystem.Authorization;
 using System.Collections.Generic;
+using Abp.Localization;
+using Abp.Dependency;
 
 namespace BookManagementSystem.Roles
 {
@@ -56,9 +58,11 @@ namespace BookManagementSystem.Roles
 
         public List<GetAllPermissionOutPut> GetAllPermission()
         {
-            var permissions = PermissionFinder.GetAllPermissions(new BookManagementSystemAuthorizationProvider());
+            var permissions = PermissionFinder.GetAllPermissions(new BookManagementSystemAuthorizationProvider()).ToList();
 
-            return permissions.Select(s => new GetAllPermissionOutPut { DisplayName = s.DisplayName.ToString(), Name = s.Name, ParentName = s.Parent.Name }).ToList();
+            var ss = permissions.Select(s => new GetAllPermissionOutPut { DisplayName = (LocalizableString)s.DisplayName, Name = s.Name, ParentName = s.Parent.Name }).ToList();
+
+            return ss;
         }
     }
 }

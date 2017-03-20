@@ -28,7 +28,7 @@ namespace BookManagementSystem.Authorization
 
         }
 
-        private static ILocalizableString L(string name)
+        private static LocalizableString L(string name)
         {
             return new LocalizableString(name, BookManagementSystemConsts.LocalizationSourceName);
         }
