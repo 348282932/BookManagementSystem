@@ -1,8 +1,10 @@
-﻿@{Layout = null;}
-@using Microsoft.Owin.Security
+﻿@using Microsoft.Owin.Security
 @using System.Web.Optimization
 @model BookManagementSystem.Web.Models.Account.LoginFormViewModel
-
+@{
+    Layout = null;
+    SetAntiForgeryCookie();
+}
 <!DOCTYPE html>
 <html lang="en">
 

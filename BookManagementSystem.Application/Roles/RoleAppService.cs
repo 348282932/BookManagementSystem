@@ -58,11 +58,14 @@ namespace BookManagementSystem.Roles
 
         public List<GetAllPermissionOutPut> GetAllPermission()
         {
-            var permissions = PermissionFinder.GetAllPermissions(new BookManagementSystemAuthorizationProvider()).ToList();
-
-            var ss = permissions.Select(s => new GetAllPermissionOutPut { DisplayName = (LocalizableString)s.DisplayName, Name = s.Name, ParentName = s.Parent.Name }).ToList();
-
-            return ss;
+            return PermissionFinder
+                .GetAllPermissions(new BookManagementSystemAuthorizationProvider())
+                .Select(s => new GetAllPermissionOutPut
+                {
+                    DisplayName = ((LocalizableString)s.DisplayName).Name,
+                    Name = s.Name,
+                    ParentName = s.Parent?.Name
+                }).ToList();
         }
     }
 }
