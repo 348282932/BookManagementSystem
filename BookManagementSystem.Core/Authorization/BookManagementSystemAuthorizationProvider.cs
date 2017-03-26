@@ -19,7 +19,13 @@ namespace BookManagementSystem.Authorization
 
             var users = pages.CreateChildPermission(PermissionNames.Pages_Users, L("Users"));
 
+            users.CreateChildPermission(PermissionNames.Pages_Users_Roles, L("Roles"));
+
             var authors = pages.CreateChildPermission(PermissionNames.Pages_Authors, L("Authors"));
+
+            var books = authors.CreateChildPermission(PermissionNames.Pages_Authors_Books, L("Books"));
+
+            books.CreateChildPermission(PermissionNames.Pages_Authors_Books_ZhangJie, L("ZhangJie"));
 
             //Host permissions
 

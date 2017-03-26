@@ -1,0 +1,200 @@
+﻿@using Abp.Collections.Extensions
+@using Abp.Web.Mvc.Extensions
+@using BookManagementSystem.Web.Views
+@using System.Web.Optimization
+@model Abp.Application.Services.Dto.ListResultDto<BookManagementSystem.Roles.Dto.RoleOutput>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Styles.Render("~/Bundles/easeui/css");
+    Scripts.Render("~/Bundles/easeui/js");
+}
+@*@section scripts
+{
+    @Html.IncludeScript("~/Views/Users/Index.js")
+}*@
+<div class="row-content am-cf">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+            <div class="widget am-cf">
+                <div class="widget-head am-cf">
+                    <div class="widget-title  am-cf">@L("Users")</div>
+                </div>
+                <div class="widget-body  am-fr">
+
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                        <div class="am-form-group">
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button type="button" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</button>
+                                    <button type="button" id="updateRoleInfo" class="am-btn am-btn-default am-btn-secondary"><span class="am-icon-save"></span> 保存</button>
+                                    <button type="button" class="am-btn am-btn-default am-btn-warning"><span class="am-icon-archive"></span> 审核</button>
+                                    <button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
+                        <div class="am-form-group tpl-table-list-select">
+                            <select data-am-selected="{btnSize: 'sm'}">
+                                <option value="option1">所有类别</option>
+                                <option value="option2">IT业界</option>
+                                <option value="option3">数码产品</option>
+                                <option value="option3">笔记本电脑</option>
+                                <option value="option3">平板电脑</option>
+                                <option value="option3">只能手机</option>
+                                <option value="option3">超极本</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                        <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                            <input type="text" class="am-form-field ">
+                            <span class="am-input-group-btn">
+                                <button class="am-btn am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button"></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="am-u-sm-12 am-scrollable-horizontal am-text-nowrap">
+                        
+                        <table id="dg" class="easyui-datagrid" title="角色权限列表" style="width:700px;height:250px"
+                               data-options="rownumbers:true,singleSelect:true,url:'/Roles/',idField:'RoleId',method:'get'">
+                            <thead>
+                                <tr>
+                                    <th data-options="field:'ck',checkbox:true"></th>
+                                    <th data-options="field:'RoleName',width:100">角色</th>
+                                    <th data-options="field:'PermissionCount',width:80,align:'right'">套用人数</th>
+                                    <th data-options="field:'PermissionNames',width:80,align:'right'">权限列表</th>
+                                    <th data-options="field:'PermissionValues',width:220,hidden:true">权限值列表</th>
+                                </tr>
+                            </thead>
+                        </table>
+
+    @*<table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black am-table-centered " id="example-r">
+        <thead>
+            <tr>
+                <th>角色名称</th>
+                <th>拥有权限</th>
+                <th>套用人数</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Items.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    <tr class="gradeX">
+                        <td>@Model.Items[i].</td>
+                        <td>@Model.Items[i].UserName</td>
+                        <td>@Model.Items[i].PhoneNumber</td>
+                        <td>@Model.Items[i].EmailAddress</td>
+                        <td>@Model.Items[i].LastLoginTime</td>
+                        <td>@Model.Items[i].CreationTime</td>
+                        <td>@L(Model.Items[i].IsVip ? "Yes" : "No")</td>
+                        <td>
+                            <div class="tpl-table-black-operation">
+                                <a href="javascript:;">
+                                    <i class="am-icon-pencil"></i> 编辑
+                                </a>
+                                <a href="javascript:;" class="tpl-table-black-operation-del">
+                                    <i class="am-icon-trash"></i> 删除
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr class="even gradeC">
+                        <td>@Model.Items[i].Surname</td>
+                        <td>@Model.Items[i].UserName</td>
+                        <td>@Model.Items[i].PhoneNumber</td>
+                        <td>@Model.Items[i].EmailAddress</td>
+                        <td>@Model.Items[i].LastLoginTime</td>
+                        <td>@Model.Items[i].CreationTime</td>
+                        <td>@L(Model.Items[i].IsVip ? "Yes" : "No")</td>
+                        <td>
+                            <div class="tpl-table-black-operation">
+                                <a href="javascript:;">
+                                    <i class="am-icon-pencil"></i> 编辑
+                                </a>
+                                <a href="javascript:;" class="tpl-table-black-operation-del">
+                                    <i class="am-icon-trash"></i> 删除
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            <!-- more data -->
+        </tbody>
+    </table>*@
+                    </div>
+                    <div class="am-u-lg-12 am-cf">
+                        <div class="am-fr">
+                            <ul class="am-pagination tpl-pagination">
+                                <li class="am-disabled"><a href="#">«</a></li>
+                                <li class="am-active"><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li><a href="#">»</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-2.2.0.min.js"></script>
+<script>
+
+    $('#updateRoleInfo').click(function (e) {
+
+        e.preventDefault();// 阻止表单提交
+
+        //构建要传输的参数对象
+
+
+        // 动态 api 调用 （直接调用应用层方法）
+        //var _roleService = abp.services.app.role;
+        //_roleService.updateRoleInfo(role).done(function (data) {
+        //    debugger
+        //    console.log(data);
+        //    location.reload(true); //reload page to see new user!
+        //}).always(function () {
+        //    abp.ui.clearBusy(_$modal);
+        //});
+
+        //调用abp的ajax方法
+
+        var role = {
+            RoleId: 2,
+            Name: 'Max',
+            DisplayName: 'MaxLong'
+        };
+
+        abp.ajax({
+            url: '/Roles/GetAllPermission',
+            //data: JSON.stringify(role),
+            method: "GET",
+        }).done(function (data) {
+            console.log(data);
+            //abp.notify.success('成功');
+            //abp.notify.error('失败');
+            location.reload(true);
+        }).fail(function (data)
+        {
+            debugger
+
+        });
+    })
+
+
+
+
+</script>

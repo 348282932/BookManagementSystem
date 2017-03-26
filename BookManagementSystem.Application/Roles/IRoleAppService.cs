@@ -2,11 +2,18 @@
 using Abp.Application.Services;
 using BookManagementSystem.Roles.Dto;
 using System.Collections.Generic;
-
+using Abp.Authorization;
+using Abp.Application.Services.Dto;
 namespace BookManagementSystem.Roles
 {
     public interface IRoleAppService : IApplicationService
     {
+        /// <summary>
+        /// 获取权限列表
+        /// </summary>
+        /// <returns></returns>
+        PagedResultDto<RoleOutput> List(RoleInput input);
+
         /// <summary>
         /// 更新权限
         /// </summary>
@@ -29,9 +36,16 @@ namespace BookManagementSystem.Roles
         Task InsertRole(InsertRoleInput input);
 
         /// <summary>
-        /// 获取全部权限节点
+        /// 获取根权限节点
         /// </summary>
         /// <returns></returns>
-        List<GetAllPermissionOutPut> GetAllPermission();
+        IReadOnlyList<Permission> GetRootPermissions();
+
+        /// <summary>
+        /// 获取对应角色的权限
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        Task<IReadOnlyList<Permission>> GetPermissionsByRoleId(int roleId);
     }
 }

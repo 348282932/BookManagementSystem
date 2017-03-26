@@ -6,8 +6,8 @@ using BookManagementSystem.Roles.Dto;
 using Abp.AutoMapper;
 using BookManagementSystem.Authorization;
 using System.Collections.Generic;
-using Abp.Localization;
-using Abp.Dependency;
+using Abp.Linq.Extensions;
+using Abp.Application.Services.Dto;
 
 namespace BookManagementSystem.Roles
 {
@@ -56,16 +56,33 @@ namespace BookManagementSystem.Roles
             await CurrentUnitOfWork.SaveChangesAsync();
         }
 
-        public List<GetAllPermissionOutPut> GetAllPermission()
+        public IReadOnlyList<Permission> GetRootPermissions()
         {
-            return PermissionFinder
-                .GetAllPermissions(new BookManagementSystemAuthorizationProvider())
-                .Select(s => new GetAllPermissionOutPut
-                {
-                    DisplayName = ((LocalizableString)s.DisplayName).Name,
-                    Name = s.Name,
-                    ParentName = s.Parent?.Name
-                }).ToList();
+            return PermissionFinder.GetAllPermissions(new BookManagementSystemAuthorizationProvider()).Take(1).ToList();
+        }
+
+        public async Task<IReadOnlyList<Permission>> GetPermissionsByRoleId(int roleId)
+        {
+            return await _roleManager.GetGrantedPermissionsAsync(roleId);
+        }
+
+        public PagedResultDto<RoleOutput> List(RoleInput input)
+        {
+            var rolesCount = _roleManager.Roles.Count();
+
+            var roles = _roleManager.Roles.OrderByDescending(p => p.CreationTime).PageBy(input);
+
+            roles.Select(s => new RoleOutput
+            {
+                RoleId = s.Id,
+                RoleName = s.DisplayName,
+                
+            });
+
+            return new PagedResultDto<RoleOutput>(
+                rolesCount,
+                roles.MapTo<List<RoleOutput>>()
+                );
         }
     }
 }

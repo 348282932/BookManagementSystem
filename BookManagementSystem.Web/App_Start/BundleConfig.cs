@@ -62,41 +62,51 @@ namespace BookManagementSystem.Web
 
             bundles.Add(
                 new StyleBundle("~/Bundles/amazeui/css")
-                    .Include("~/assets/css/amazeui.min.css", new CssRewriteUrlTransform())
-                    .Include("~/assets/css/amazeui.datatables.min.css", new CssRewriteUrlTransform())
-                    .Include("~/assets/css/app.css", new CssRewriteUrlTransform())
-                    //.Include("~/css/admin.css", new CssRewriteUrlTransform())
-                    .Include("~/assets/css/fullcalendar.min.css", new CssRewriteUrlTransform())
-                    .Include("~/assets/css/fullcalendar.print.css", new CssRewriteUrlTransform())
+                    .Include("~/Assets/AmazeUI/css/amazeui.min.css", new CssRewriteUrlTransform())
+                    .Include("~/Assets/AmazeUI/css/amazeui.datatables.min.css", new CssRewriteUrlTransform())
+                    .Include("~/Assets/AmazeUI/css/app.css", new CssRewriteUrlTransform())
+                    .Include("~/Assets/AmazeUI/css/fullcalendar.min.css", new CssRewriteUrlTransform())
+                    .Include("~/Assets/AmazeUI/css/fullcalendar.print.css", new CssRewriteUrlTransform())
                 );
 
             bundles.Add(
                 new ScriptBundle("~/Bundles/amazeui/js")
                     .Include(
-                        "~/assets/js/theme.js",
-                        "~/assets/js/amazeui.min.js",
-                        "~/assets/js/amazeui.datatables.min.js",
-                        "~/assets/js/dataTables.responsive.min.js",
-                        "~/assets/js/fullcalendar.min.js",
-                        "~/assets/js/app.js"
-                    //"~/js/moment.js",
-                    //"~/js/theme.js"
+                        "~/Assets/AmazeUI/js/theme.js",
+                        "~/Assets/AmazeUI/js/amazeui.min.js",
+                        "~/Assets/AmazeUI/js/amazeui.datatables.min.js",
+                        "~/Assets/AmazeUI/js/dataTables.responsive.min.js",
+                        "~/Assets/AmazeUI/js/fullcalendar.min.js",
+                        "~/Assets/AmazeUI/js/app.js"
+                    )
+                );
+
+            bundles.Add(
+                new StyleBundle("~/Bundles/easeui/css")
+                    .Include("~/Assets/EaseUI/themes/default/easyui.css", new CssRewriteUrlTransform())
+                    .Include("~/Assets/EaseUI/themes/icon.css", new CssRewriteUrlTransform())
+                );
+
+            bundles.Add(
+                new ScriptBundle("~/Bundles/easeui/js")
+                    .Include(
+                        "~/Assets/EaseUI/jquery.easyui.min.js"
                     )
                 );
 
             bundles.Add(
                 new StyleBundle("~/Bundles/amazeui/login/css")
-                    .Include("~/assets/css/amazeui.min.css", new CssRewriteUrlTransform())
-                    .Include("~/assets/css/amazeui.datatables.min.css", new CssRewriteUrlTransform())
-                    .Include("~/assets/css/app.css", new CssRewriteUrlTransform())
+                    .Include("~/Assets/AmazeUI/css/amazeui.min.css", new CssRewriteUrlTransform())
+                    .Include("~/Assets/AmazeUI/css/amazeui.datatables.min.css", new CssRewriteUrlTransform())
+                    .Include("~/Assets/AmazeUI/css/app.css", new CssRewriteUrlTransform())
                     .Include("~/Views/Account/Login.css", new CssRewriteUrlTransform())
                 );
             bundles.Add(
                 new ScriptBundle("~/Bundles/amazeui/login/js")
                     .Include(
-                        "~/assets/js/amazeui.min.js",
-                        "~/assets/js/theme.js",
-                        "~/assets/js/app.js",
+                        "~/Assets/AmazeUI/js/amazeui.min.js",
+                        "~/Assets/AmazeUI/js/theme.js",
+                        "~/Assets/AmazeUI/js/app.js",
                         "~/Views/Account/Login.js"
                     )
                 );
