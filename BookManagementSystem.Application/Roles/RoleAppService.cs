@@ -8,6 +8,10 @@ using BookManagementSystem.Authorization;
 using System.Collections.Generic;
 using Abp.Linq.Extensions;
 using Abp.Application.Services.Dto;
+using Abp.Domain.Repositories;
+using Abp.Authorization.Users;
+using System.Security.Permissions;
+using BookManagementSystem.Services.Dto;
 
 namespace BookManagementSystem.Roles
 {
@@ -16,11 +20,13 @@ namespace BookManagementSystem.Roles
     {
         private readonly RoleManager _roleManager;
         private readonly IPermissionManager _permissionManager;
+        private readonly IRepository<UserRole> _userRoleRepository;
 
-        public RoleAppService(RoleManager roleManager, IPermissionManager permissionManager)
+        public RoleAppService(RoleManager roleManager, IPermissionManager permissionManager, IRepository<UserRole> userRoleRepository)
         {
             _roleManager = roleManager;
             _permissionManager = permissionManager;
+            _userRoleRepository = userRoleRepository;
         }
 
         public async Task UpdateRolePermissions(UpdateRolePermissionsInput input)
@@ -66,23 +72,25 @@ namespace BookManagementSystem.Roles
             return await _roleManager.GetGrantedPermissionsAsync(roleId);
         }
 
-        public PagedResultDto<RoleOutput> List(RoleInput input)
+        public EaseUIPagedResultDto<RoleOutput> List(RoleInput input)
         {
             var rolesCount = _roleManager.Roles.Count();
 
             var roles = _roleManager.Roles.OrderByDescending(p => p.CreationTime).PageBy(input);
 
-            roles.Select(s => new RoleOutput
+            var userRoles = _userRoleRepository.GetAll();
+
+            var query = roles.GroupJoin(userRoles, r => new { RoleId = r.Id }, ur => new { RoleId = ur.RoleId }, (r, ur) => new { r.Id, r.DisplayName,r.CreationTime, UserCount = ur.Count() });
+
+            var data = query.Select(s => new RoleOutput
             {
                 RoleId = s.Id,
-                RoleName = s.DisplayName,
-                
-            });
+                DisplayName = s.DisplayName,
+                PermissionCount = s.UserCount,
+                CreationTime = s.CreationTime
+            }).ToList();
 
-            return new PagedResultDto<RoleOutput>(
-                rolesCount,
-                roles.MapTo<List<RoleOutput>>()
-                );
+            return new EaseUIPagedResultDto<RoleOutput>(rolesCount, data);
         }
     }
 }

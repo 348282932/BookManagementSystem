@@ -45,12 +45,17 @@ namespace BookManagementSystem.Web.Controllers
             return Json(new AjaxResponse());
         }
 
-        //public JsonResult List()
-        //{
-        //    //var data = 
+        [HttpPost]
+        public JsonResult List()
+        {
+            var pageSize = Convert.ToInt32(Request["pageSize"]);
 
-        //    return Json(data);
-        //}
+            var pageIndex = Convert.ToInt32(Request["pageIndex"]);
+
+            var data = _roleAppService.List(new RoleInput { MaxResultCount = pageSize, SkipCount = pageIndex });
+            
+            return Json(data);
+        }
 
         public JsonResult GetRootPermissions()
         {

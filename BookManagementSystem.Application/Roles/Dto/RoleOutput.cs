@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BookManagementSystem.Roles.Dto
 {
@@ -6,12 +7,10 @@ namespace BookManagementSystem.Roles.Dto
     {
         public int RoleId { get; set; }
 
-        public string RoleName { get; set; }
+        public string DisplayName { get; set; }
 
-        public string PermissionCount { get; set; }
+        public int PermissionCount { get; set; }
 
-        public string PermissionNames { get; set; }
-
-        public string PermissionValues { get; set; }
+        public DateTime CreationTime { get; set; }
     }
 }

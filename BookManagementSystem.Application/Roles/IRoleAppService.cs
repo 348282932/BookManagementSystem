@@ -3,7 +3,7 @@ using Abp.Application.Services;
 using BookManagementSystem.Roles.Dto;
 using System.Collections.Generic;
 using Abp.Authorization;
-using Abp.Application.Services.Dto;
+using BookManagementSystem.Services.Dto;
 namespace BookManagementSystem.Roles
 {
     public interface IRoleAppService : IApplicationService
@@ -12,7 +12,7 @@ namespace BookManagementSystem.Roles
         /// 获取权限列表
         /// </summary>
         /// <returns></returns>
-        PagedResultDto<RoleOutput> List(RoleInput input);
+        EaseUIPagedResultDto<RoleOutput> List(RoleInput input);
 
         /// <summary>
         /// 更新权限
